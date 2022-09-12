@@ -10,15 +10,17 @@ def portfolio_cost(filename):
 
     tot = 0
     with open(filename, "rt") as p:
-        lines = csv.reader(p)
-        headers = next(lines)
-        for line in lines:
+        rows = csv.reader(p)
+        headers = next(rows)
+        for rowno, row in enumerate(rows, start=1):
+            record = dict(zip(headers, row))
             try:
-                num_shares = int(line[1])
-                price = float(line[2])
+                num_shares = int(record["shares"])
+                price = float(record["price"])
                 tot += num_shares * price
+                print(record)
             except ValueError:
-                print(f"Couldn't parse line: {line}")
+                print(f"Row {rowno} Bad row: {row}")
 
     return tot
 
@@ -26,6 +28,6 @@ def portfolio_cost(filename):
 if len(sys.argv) == 2:
     filename = sys.argv[1]
 else:
-    filename = "Data/portfolio.csv"
+    filename = "Data/portfoliodate.csv"
 cost = portfolio_cost(filename)
 print(f"Total cost: ${cost}")
