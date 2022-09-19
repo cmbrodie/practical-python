@@ -22,3 +22,29 @@ for name, shares, price in portfolio:
     holdings[name].append((shares, price))
 
 print(holdings["IBM"])
+
+
+def read_prices(filename: str) -> dict:
+    """
+    Read prices from a CSV file of name, price data
+    """
+    import csv
+
+    prices = {}
+    with open(filename) as f:
+        f_csv = csv.reader(f)
+        try:
+            for row in f_csv:
+                prices[row[0]] = float(row[1])
+        except IndexError:
+            pass
+        return prices
+
+
+prices = read_prices("Data/prices.csv")
+
+
+def divide(a, b):
+    q = a // b
+    r = a % b
+    return q, r
