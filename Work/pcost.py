@@ -17,13 +17,19 @@ def portfolio_cost(filename):
     )
 
 
-if len(sys.argv) == 2:
-    filename = sys.argv[1]
-else:
-    filename = "Data/portfoliodate.csv"
-cost = portfolio_cost(filename)
-print(f"Total cost: ${cost}")
+def main(arglist=sys.argv):
 
+    if len(arglist) == 2:
+        filename = arglist[1]
+    else:
+        filename = "Data/portfoliodate.csv"
+        print(f"please add a csv file after {sys.argv[0]}")
+    cost = portfolio_cost(filename)
+    print(f"Total cost: ${cost}")
+
+
+if __name__ == "__main__":
+    main()
 
 # def portfolio_cost(filename):
 #     """Takes in a filename and returns a total portfolio cost"""

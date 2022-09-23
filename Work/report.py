@@ -3,19 +3,28 @@
 # Exercise 2.4
 from fileparse import parse_csv
 
+import csv
+
 
 def read_portfolio(filename):
     """
     Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price.
     """
-    return parse_csv(
-        filename=filename, select=["name", "shares", "price"], types=[str, int, float]
-    )
+    with open(filename) as f:
+        file = list(csv.reader(f))
+
+        portfolio = parse_csv(
+            lines=file, select=["name", "shares", "price"], types=[str, int, float]
+        )
+    return portfolio
 
 
 def read_prices(filename):
-    return dict(parse_csv(filename=filename, types=[str, float], has_headers=False))
+    with open(filename) as f:
+        file = list(csv.reader(f))
+        prices = dict(parse_csv(lines=file, types=[str, float], has_headers=False))
+    return prices
 
 
 def make_report(portfolio, prices):
@@ -47,6 +56,24 @@ def portfolio_report(portfolio_filename, prices_filename):
     prices = read_prices(prices_filename)
     report = make_report(portfolio, prices)
     print_report(report)
+
+
+import sys
+
+
+def main(arglist=sys.argv):
+
+    if len(arglist) != 3:
+        portfolio_report("Data/portfolio.csv", "Data/prices.csv")
+        print(f"please add the names of the two csv files after {arglist[0]}")
+    else:
+        file1 = arglist[1]
+        file2 = arglist[2]
+        portfolio_report(file1, file2)
+
+
+if __name__ == "__main__":
+    main()
 
 
 """Interesting code Uncomment"""
