@@ -1,52 +1,26 @@
 # pcost.py
-#
-# Exercise 1.27
-
-import sys
-
+from stock import Stock
 import report
 
 
 def portfolio_cost(filename):
-    """Takes in a filename and returns a total portfolio cost"""
-    return sum(
-        [
-            row["shares"] * row["price"]
-            for row in report.read_portfolio(filename=filename)
-        ]
-    )
+    """
+    Computes the total cost (shares*price) of a portfolio file
+    """
+    portfolio = report.read_portfolio(filename)
+    return sum([s.shares * s.price for s in portfolio])
 
 
-def main(arglist=sys.argv):
-
-    if len(arglist) == 2:
-        filename = arglist[1]
+def main(args):
+    if len(args) != 2:
+        print(f"please add a filename after {args[0]}")
+        print(f"Total cost of portfolio.csv: {portfolio_cost('Data/portfolio.csv')}")
     else:
-        filename = "Data/portfoliodate.csv"
-        print(f"please add a csv file after {sys.argv[0]}")
-    cost = portfolio_cost(filename)
-    print(f"Total cost: ${cost}")
+        filename = args[1]
+        print("Total cost:", portfolio_cost(filename))
 
 
 if __name__ == "__main__":
-    main()
+    import sys
 
-# def portfolio_cost(filename):
-#     """Takes in a filename and returns a total portfolio cost"""
-#     import csv
-
-#     tot = 0
-#     with open(filename, "rt") as p:
-#         rows = csv.reader(p)
-#         headers = next(rows)
-#         for rowno, row in enumerate(rows, start=1):
-#             record = dict(zip(headers, row))
-#             try:
-#                 num_shares = int(record["shares"])
-#                 price = float(record["price"])
-#                 tot += num_shares * price
-#                 print(record)
-#             except ValueError:
-#                 print(f"Row {rowno} Bad row: {row}")
-
-#     return tot
+    main(sys.argv)
